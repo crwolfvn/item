@@ -1,21 +1,27 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>ROCO / FLEISCHMANN Item Decoder</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
-    font-family:"Times New Roman",serif;
-    background:#f2f2f2;
     margin:0;
-    padding:30px;
+    padding:15px;
+    background:#f2f2f2;
+    font-family:"Times New Roman",serif;
 }
 
 .container{
-    width:900px;
+    width:100%;
+    max-width:900px;
     margin:auto;
 }
 
@@ -25,8 +31,9 @@ body{
     text-align:center;
     font-size:28px;
     font-weight:bold;
-    padding:20px;
+    padding:18px;
     border:2px solid #666;
+    border-radius:8px;
 }
 
 .input-section{
@@ -35,17 +42,31 @@ body{
 }
 
 input{
-    width:250px;
-    height:40px;
+    width:100%;
+    max-width:350px;
+    height:50px;
     font-size:24px;
     text-align:center;
+    border:2px solid #666;
+    border-radius:6px;
 }
 
 button{
-    height:45px;
-    padding:0 20px;
+    margin-top:10px;
+    height:50px;
+    width:100%;
+    max-width:180px;
     font-size:18px;
+    font-weight:bold;
     cursor:pointer;
+    border:none;
+    border-radius:6px;
+    background:#4472C4;
+    color:white;
+}
+
+button:hover{
+    background:#305496;
 }
 
 .error{
@@ -56,8 +77,10 @@ button{
 
 .card{
     margin-top:20px;
-    border:2px solid black;
     background:white;
+    border:2px solid black;
+    border-radius:8px;
+    overflow:hidden;
 }
 
 table{
@@ -67,18 +90,18 @@ table{
 
 td{
     border:1px solid black;
-    padding:10px;
+    padding:12px;
     font-size:20px;
 }
 
 .label{
-    width:50%;
-    background:#D8E4D0;
+    width:45%;
+    background:#D9EAD3;
     font-weight:bold;
 }
 
 .value{
-    width:50%;
+    width:55%;
 }
 
 .itemNo{
@@ -90,13 +113,49 @@ td{
 
 .roco{
     background:#C00000 !important;
-    color:white;
 }
 
 .flm{
     background:#1F4E78 !important;
-    color:white;
 }
+
+.footer{
+    margin-top:15px;
+    text-align:center;
+    color:#666;
+    font-size:14px;
+}
+
+@media screen and (max-width:768px){
+
+    body{
+        padding:10px;
+    }
+
+    .header{
+        font-size:20px;
+        padding:12px;
+    }
+
+    td{
+        font-size:16px;
+        padding:8px;
+    }
+
+    .itemNo{
+        font-size:24px;
+    }
+
+    input{
+        font-size:20px;
+    }
+
+    button{
+        max-width:none;
+    }
+
+}
+
 </style>
 </head>
 
@@ -110,10 +169,17 @@ ROCO / FLEISCHMANN ITEM DATA
 
 <div class="input-section">
 
-<input type="text" id="itemNo" maxlength="7">
+<input
+type="text"
+id="itemNo"
+maxlength="7"
+inputmode="numeric"
+placeholder="Enter 7-digit Item Number">
+
+<br>
 
 <button onclick="decodeItem()">
-Tra Cứu
+TRA CỨU
 </button>
 
 <div id="error" class="error"></div>
@@ -131,41 +197,45 @@ Tra Cứu
 
 <tr>
 <td class="label">Brand</td>
-<td id="r_brand"></td>
+<td id="r_brand" class="value"></td>
 </tr>
 
 <tr>
 <td class="label">Category</td>
-<td id="r_category"></td>
+<td id="r_category" class="value"></td>
 </tr>
 
 <tr>
 <td class="label">Product Group</td>
-<td id="r_product"></td>
+<td id="r_product" class="value"></td>
 </tr>
 
 <tr>
 <td class="label">Scale</td>
-<td id="r_scale"></td>
+<td id="r_scale" class="value"></td>
 </tr>
 
 <tr>
 <td class="label">Power System</td>
-<td id="r_power"></td>
+<td id="r_power" class="value"></td>
 </tr>
 
 <tr>
 <td class="label">Sound</td>
-<td id="r_sound"></td>
+<td id="r_sound" class="value"></td>
 </tr>
 
 <tr>
 <td class="label">Consecutive Number</td>
-<td id="r_seq"></td>
+<td id="r_seq" class="value"></td>
 </tr>
 
 </table>
 
+</div>
+
+<div class="footer">
+ROCO / FLEISCHMANN Product Decoder
 </div>
 
 </div>
@@ -192,6 +262,7 @@ const productGroups = {
 "75": {category:"LOK-E",product:"Electric Locomotives"},
 
 "77": {category:"RC",product:"Railcars"}
+
 };
 
 const gaugeMap = {
@@ -210,6 +281,7 @@ const gaugeMap = {
 
 "8": {brand:"ROCO",scale:"TT (1:120)",power:"DC",sound:"No"},
 "9": {brand:"ROCO",scale:"TT (1:120)",power:"DCC",sound:"Yes"}
+
 };
 
 function decodeItem(){
@@ -218,9 +290,9 @@ const item=document.getElementById("itemNo").value.trim();
 
 document.getElementById("error").innerHTML="";
 
-if(!/^\d+$/.test(item)){
+if(!/^[0-9]+$/.test(item)){
     document.getElementById("error").innerHTML=
-    "❌ Item Number chỉ được chứa ký tự số";
+    "❌ Item Number chỉ được chứa ký tự số (0-9)";
     return;
 }
 
