@@ -3,346 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="theme-color" content="#1F4E78">
 <title>ROCO / FLEISCHMANN Item Decoder</title>
-
 <style>
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    padding:15px;
-    background:#f2f2f2;
-    font-family:"Times New Roman",serif;
-}
-
-.container{
-    width:100%;
-    max-width:900px;
-    margin:auto;
-}
-
-.header{
-    background:#E26B0A;
-    color:white;
-    text-align:center;
-    font-size:28px;
-    font-weight:bold;
-    padding:18px;
-    border:2px solid #666;
-    border-radius:8px;
-}
-
-.input-section{
-    margin-top:20px;
-    text-align:center;
-}
-
-input{
-    width:100%;
-    max-width:350px;
-    height:50px;
-    font-size:24px;
-    text-align:center;
-    border:2px solid #666;
-    border-radius:6px;
-}
-
-button{
-    margin-top:10px;
-    height:50px;
-    width:100%;
-    max-width:180px;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-    border:none;
-    border-radius:6px;
-    background:#4472C4;
-    color:white;
-}
-
-button:hover{
-    background:#305496;
-}
-
-.error{
-    color:red;
-    font-weight:bold;
-    margin-top:10px;
-}
-
-.card{
-    margin-top:20px;
-    background:white;
-    border:2px solid black;
-    border-radius:8px;
-    overflow:hidden;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-td{
-    border:1px solid black;
-    padding:12px;
-    font-size:20px;
-}
-
-.label{
-    width:45%;
-    background:#D9EAD3;
-    font-weight:bold;
-}
-
-.value{
-    width:55%;
-}
-
-.itemNo{
-    color:red;
-    font-size:32px;
-    font-weight:bold;
-    text-align:center;
-}
-
-.roco{
-    background:#C00000 !important;
-}
-
-.flm{
-    background:#1F4E78 !important;
-}
-
-.footer{
-    margin-top:15px;
-    text-align:center;
-    color:#666;
-    font-size:14px;
-}
-
-@media screen and (max-width:768px){
-
-    body{
-        padding:10px;
-    }
-
-    .header{
-        font-size:20px;
-        padding:12px;
-    }
-
-    td{
-        font-size:16px;
-        padding:8px;
-    }
-
-    .itemNo{
-        font-size:24px;
-    }
-
-    input{
-        font-size:20px;
-    }
-
-    button{
-        max-width:none;
-    }
-
-}
-
+*{box-sizing:border-box}body{margin:0;padding:15px;background:#f2f2f2;font-family:"Times New Roman",serif}
+.container{width:100%;max-width:900px;margin:auto}.header{background:#E26B0A;color:#fff;text-align:center;font-size:28px;font-weight:bold;padding:18px;border:2px solid #666;border-radius:8px}
+.roco{background:#C00000!important}.flm{background:#1F4E78!important}
+.input-section{text-align:center;margin-top:20px}input{width:100%;max-width:350px;height:50px;font-size:24px;text-align:center;border:2px solid #666;border-radius:6px}
+button{margin:10px 5px;height:50px;padding:0 20px;font-size:18px;font-weight:bold;border:none;border-radius:6px;background:#4472C4;color:#fff;cursor:pointer}
+.card{margin-top:20px;background:#fff;border:2px solid #000;border-radius:8px;overflow:hidden}
+table{width:100%;border-collapse:collapse}td{border:1px solid #000;padding:12px;font-size:20px}
+.label{width:45%;background:#D9EAD3;font-weight:bold}.itemNo{color:red;font-size:32px;font-weight:bold;text-align:center}
+.error{color:red;font-weight:bold;margin-top:10px}.product-btn{display:inline-block;background:#4472C4;color:#fff;padding:8px 16px;border-radius:5px;text-decoration:none}
+.footer{text-align:center;margin-top:15px}
+@media(max-width:768px){.header{font-size:20px}.itemNo{font-size:24px}td{font-size:16px;padding:8px}}
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
-<div id="titleBar" class="header">
-ROCO / FLEISCHMANN ITEM DATA
-</div>
-
+<div id="titleBar" class="header">ROCO / FLEISCHMANN ITEM DATA</div>
 <div class="input-section">
-
-<input
-type="text"
-id="itemNo"
-maxlength="7"
-inputmode="numeric"
+<input type="text" id="itemNo" maxlength="7" inputmode="numeric"
+oninput="this.value=this.value.replace(/[^0-9]/g,'')"
 placeholder="Enter 7-digit Item Number">
-
 <br>
-
-<button onclick="decodeItem()">
-TRA CỨU
-</button>
-
+<button onclick="decodeItem()">TRA CỨU</button>
+<button onclick="clearAll()">CLEAR</button>
 <div id="error" class="error"></div>
-
 </div>
-
 <div class="card">
-
 <table>
-
-<tr>
-<td class="label">Item Number</td>
-<td id="r_item" class="itemNo"></td>
-</tr>
-
-<tr>
-<td class="label">Brand</td>
-<td id="r_brand" class="value"></td>
-</tr>
-
-<tr>
-<td class="label">Category</td>
-<td id="r_category" class="value"></td>
-</tr>
-
-<tr>
-<td class="label">Product Group</td>
-<td id="r_product" class="value"></td>
-</tr>
-
-<tr>
-<td class="label">Scale</td>
-<td id="r_scale" class="value"></td>
-</tr>
-
-<tr>
-<td class="label">Power System</td>
-<td id="r_power" class="value"></td>
-</tr>
-
-<tr>
-<td class="label">Sound</td>
-<td id="r_sound" class="value"></td>
-</tr>
-
-<tr>
-<td class="label">Consecutive Number</td>
-<td id="r_seq" class="value"></td>
-</tr>
-
+<tr><td class="label">Item Number</td><td id="r_item" class="itemNo"></td></tr>
+<tr><td class="label">Brand</td><td id="r_brand"></td></tr>
+<tr><td class="label">Category</td><td id="r_category"></td></tr>
+<tr><td class="label">Product Group</td><td id="r_product"></td></tr>
+<tr><td class="label">Scale</td><td id="r_scale"></td></tr>
+<tr><td class="label">Power System</td><td id="r_power"></td></tr>
+<tr><td class="label">Sound</td><td id="r_sound"></td></tr>
+<tr><td class="label">Consecutive Number</td><td id="r_seq"></td></tr>
+<tr id="productLinkRow" style="display:none;"><td class="label">Product Link</td><td id="r_link"></td></tr>
 </table>
-
 </div>
-
-<div class="footer">
-ROCO / FLEISCHMANN Product Decoder
+<div class="footer">ROCO | FLEISCHMANN Decoder</div>
 </div>
-
-</div>
-
 <script>
-
-const productGroups = {
-
-"10": {category:"ELE",product:"Electronics"},
-"40": {category:"ACC",product:"Accessories"},
-
-"51": {category:"SET",product:"Start Set"},
-"53": {category:"SET-P",product:"Start Set Premium"},
-"55": {category:"SET",product:"Trainset"},
-"57": {category:"SET-P",product:"Trainset Premium"},
-
-"61": {category:"WAG-P",product:"Passenger Coaches Start"},
-"62": {category:"WAG-P",product:"Passenger Coaches"},
-"65": {category:"WAG-F",product:"Goods Wagons Start"},
-"66": {category:"WAG-F",product:"Goods Wagons"},
-
-"71": {category:"LOK-S",product:"Steam Locomotives"},
-"73": {category:"LOK-D",product:"Diesel Locomotives"},
-"75": {category:"LOK-E",product:"Electric Locomotives"},
-
-"77": {category:"RC",product:"Railcars"}
-
-};
-
-const gaugeMap = {
-
-"0": {brand:"ROCO",scale:"H0 (1:87)",power:"DC",sound:"No"},
-"1": {brand:"ROCO",scale:"H0 (1:87)",power:"DCC",sound:"Yes"},
-"2": {brand:"ROCO",scale:"H0 (1:87)",power:"AC",sound:"No"},
-
-"3": {brand:"ROCO",scale:"0e (1:45)",power:"DC",sound:"No"},
-
-"4": {brand:"ROCO",scale:"H0e (1:87)",power:"DC",sound:"No"},
-"5": {brand:"ROCO",scale:"H0e (1:87)",power:"DCC",sound:"Yes"},
-
-"6": {brand:"FLEISCHMANN",scale:"N (1:160)",power:"DC",sound:"No"},
-"7": {brand:"FLEISCHMANN",scale:"N (1:160)",power:"DCC",sound:"Yes"},
-
-"8": {brand:"ROCO",scale:"TT (1:120)",power:"DC",sound:"No"},
-"9": {brand:"ROCO",scale:"TT (1:120)",power:"DCC",sound:"Yes"}
-
-};
-
+const productGroups={"10":{category:"ELE",product:"Electronics"},"40":{category:"ACC",product:"Accessories"},"51":{category:"SET",product:"Start Set"},"53":{category:"SET-P",product:"Start Set Premium"},"55":{category:"SET",product:"Trainset"},"57":{category:"SET-P",product:"Trainset Premium"},"61":{category:"WAG-P",product:"Passenger Coaches Start"},"62":{category:"WAG-P",product:"Passenger Coaches"},"65":{category:"WAG-F",product:"Goods Wagons Start"},"66":{category:"WAG-F",product:"Goods Wagons"},"71":{category:"LOK-S",product:"Steam Locomotives"},"73":{category:"LOK-D",product:"Diesel Locomotives"},"75":{category:"LOK-E",product:"Electric Locomotives"},"77":{category:"RC",product:"Railcars"}};
+const gaugeMap={"0":{brand:"ROCO",scale:"H0 (1:87)",power:"DC",sound:"No"},"1":{brand:"ROCO",scale:"H0 (1:87)",power:"DCC",sound:"Yes"},"2":{brand:"ROCO",scale:"H0 (1:87)",power:"AC",sound:"No"},"3":{brand:"ROCO",scale:"0e (1:45)",power:"DC",sound:"No"},"4":{brand:"ROCO",scale:"H0e (1:87)",power:"DC",sound:"No"},"5":{brand:"ROCO",scale:"H0e (1:87)",power:"DCC",sound:"Yes"},"6":{brand:"FLEISCHMANN",scale:"N (1:160)",power:"DC",sound:"No"},"7":{brand:"FLEISCHMANN",scale:"N (1:160)",power:"DCC",sound:"Yes"},"8":{brand:"ROCO",scale:"TT (1:120)",power:"DC",sound:"No"},"9":{brand:"ROCO",scale:"TT (1:120)",power:"DCC",sound:"Yes"}};
+function clearResult(){["r_item","r_brand","r_category","r_product","r_scale","r_power","r_sound","r_seq","r_link"].forEach(id=>document.getElementById(id).innerHTML="");productLinkRow.style.display="none";}
+function clearAll(){document.getElementById("itemNo").value="";document.getElementById("error").innerHTML="";clearResult();titleBar.className="header";}
 function decodeItem(){
-
-const item=document.getElementById("itemNo").value.trim();
-
-document.getElementById("error").innerHTML="";
-
-if(!/^[0-9]+$/.test(item)){
-    document.getElementById("error").innerHTML=
-    "❌ Item Number chỉ được chứa ký tự số (0-9)";
-    return;
+const item=itemNo.value.trim();error.innerHTML="";clearResult();
+if(!/^\d+$/.test(item)){error.innerHTML="❌ Item Number chỉ được chứa ký tự số (0-9)";return;}
+if(item.length!==7){error.innerHTML="❌ Item Number phải gồm đúng 7 ký tự";return;}
+const group=item.substring(0,2), gauge=item.substring(2,3), seq=item.substring(3);
+if(!productGroups[group]){error.innerHTML="❌ Product Group không hợp lệ";return;}
+if(!gaugeMap[gauge]){error.innerHTML="❌ Gauge Code không hợp lệ";return;}
+const g=productGroups[group], t=gaugeMap[gauge];
+r_item.innerHTML=item;r_brand.innerHTML=t.brand;r_category.innerHTML=g.category;r_product.innerHTML=g.product;r_scale.innerHTML=t.scale;r_power.innerHTML=t.power;r_sound.innerHTML=t.sound;r_seq.innerHTML=seq;
+const url=t.brand==="ROCO"?"https://www.roco.cc/rde/catalogsearch/result/?q="+item:"https://www.fleischmann.de/fde/catalogsearch/result/?q="+item;
+r_link.innerHTML='<a class="product-btn" target="_blank" href="'+url+'">View Product</a>';
+productLinkRow.style.display="table-row";
+titleBar.className=t.brand==="ROCO"?"header roco":"header flm";
 }
-
-if(item.length!==7){
-    document.getElementById("error").innerHTML=
-    "❌ Item Number phải gồm đúng 7 ký tự";
-    return;
-}
-
-const group=item.substring(0,2);
-const gauge=item.substring(2,3);
-const seq=item.substring(3);
-
-if(!productGroups[group]){
-    document.getElementById("error").innerHTML=
-    "❌ Product Group không hợp lệ";
-    return;
-}
-
-if(!gaugeMap[gauge]){
-    document.getElementById("error").innerHTML=
-    "❌ Gauge Code không hợp lệ";
-    return;
-}
-
-const g=productGroups[group];
-const t=gaugeMap[gauge];
-
-document.getElementById("r_item").innerHTML=item;
-document.getElementById("r_brand").innerHTML=t.brand;
-document.getElementById("r_category").innerHTML=g.category;
-document.getElementById("r_product").innerHTML=g.product;
-document.getElementById("r_scale").innerHTML=t.scale;
-document.getElementById("r_power").innerHTML=t.power;
-document.getElementById("r_sound").innerHTML=t.sound;
-document.getElementById("r_seq").innerHTML=seq;
-
-const title=document.getElementById("titleBar");
-
-if(t.brand==="ROCO"){
-    title.className="header roco";
-}
-else{
-    title.className="header flm";
-}
-
-}
-
+itemNo.addEventListener("keypress",e=>{if(e.key==="Enter")decodeItem();});
+itemNo.addEventListener("input",function(){if(this.value.length===7)decodeItem();});
 </script>
-
-</body>
-</html>
-```
+</body></html>
