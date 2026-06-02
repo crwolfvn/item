@@ -75,10 +75,14 @@ function clearAll(){
     document.getElementById("error").innerHTML="";
 
     clearResult();
+ // Hủy event trước
+    previewImage.onload = null;
+    previewImage.onerror = null;
+
+    // Xóa ảnh
+    previewImage.removeAttribute("src");
 
     previewImage.style.display="none";
-    previewImage.src="";
-
     previewNotFound.style.display="none";
 
     titleBar.className="header";
@@ -115,7 +119,7 @@ try {
 
     const data = await response.json();
      console.log(data);
-     console.log(data.image);
+     
 
 const previewImage =
     document.getElementById("previewImage");
