@@ -112,28 +112,33 @@ try {
         );
 
     const data = await response.json();
+     console.log(data);
+     console.log(data.image);
 
-    if(data.found){
+const previewImage =
+    document.getElementById("previewImage");
 
-        previewImage.onload = function(){
-            previewImage.style.display = "block";
-            previewNotFound.style.display = "none";
-        };
+const previewNotFound =
+    document.getElementById("previewNotFound");
 
-        previewImage.onerror = function(){
-            previewImage.style.display = "none";
-            previewNotFound.style.display = "block";
-        };
+if(data.found){
 
-        previewImage.src = data.image;
+    previewImage.src = data.image;
 
-    }else{
+    previewImage.style.display = "block";
 
-        previewImage.style.display = "none";
-        previewNotFound.style.display = "block";
+    previewNotFound.style.display = "none";
 
-    }
+}else{
 
+    previewImage.style.display = "none";
+
+    previewNotFound.style.display = "block";
+
+}
+
+     
+   
 }catch(err){
 
     previewImage.style.display = "none";
