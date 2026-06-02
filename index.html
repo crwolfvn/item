@@ -107,9 +107,11 @@ try {
 
     const response =
         await fetch(
-            "https://img-proxy.crwolfvn.workers.dev/?item="
-            + item
-        );
+  "https://img-proxy.crwolfvn.workers.dev/?item=" +
+  item +
+  "&brand=" +
+  encodeURIComponent(t.brand)
+);
 
     const data = await response.json();
      console.log(data);
