@@ -156,7 +156,12 @@ r_link.innerHTML =
   '">View Product</a>';
 productLinkRow.style.display="table-row";
 titleBar.className=t.brand==="ROCO"?"header roco":"header flm";
+const previewImage =
+    document.getElementById("previewImage");
 
+const previewNotFound =
+    document.getElementById("previewNotFound");
+     
 previewImage.style.display="none";
 previewImage.src="";
 previewNotFound.style.display="none";
@@ -218,11 +223,6 @@ if(data.productExists === false){
 
 }
 
-const previewImage =
-    document.getElementById("previewImage");
-
-const previewNotFound =
-    document.getElementById("previewNotFound");
 
 if(data.found && data.proxyImage){
 
@@ -263,5 +263,5 @@ if(data.found && data.proxyImage){
 }
 itemNo.addEventListener("keypress",e=>{if(e.key==="Enter")decodeItem();});
 itemNo.addEventListener("input",function(){if(this.value.length===7)decodeItem();});
-</script>
+</script></div>
 </body></html>
