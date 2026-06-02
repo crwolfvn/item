@@ -45,13 +45,33 @@ placeholder="Enter 7-digit Item Number">
 </table>
 </div>
 <div class="footer">Published by Trường </div>
+
+<div id="previewContainer">
+
+<h2>Preview Photo</h2>
+
+<img id="previewImage"
+     style="
+       display:none;
+       max-width:100%;
+       border:1px solid #ccc;
+     ">
+
+<div id="previewNotFound"
+     style="display:none;">
+     Not Found Preview Photo
+</div>
+
+</div>  
+  
 </div>
 <script>
 const productGroups={"10":{category:"ELE",product:"Electronics"},"40":{category:"ACC",product:"Accessories"},"51":{category:"SET",product:"Start Set"},"53":{category:"SET-P",product:"Start Set Premium"},"55":{category:"SET",product:"Trainset"},"57":{category:"SET-P",product:"Trainset Premium"},"61":{category:"WAG-P",product:"Passenger Coaches Start"},"62":{category:"WAG-P",product:"Passenger Coaches"},"65":{category:"WAG-F",product:"Goods Wagons Start"},"66":{category:"WAG-F",product:"Goods Wagons"},"71":{category:"LOK-S",product:"Steam Locomotives"},"73":{category:"LOK-D",product:"Diesel Locomotives"},"75":{category:"LOK-E",product:"Electric Locomotives"},"77":{category:"RC",product:"Railcars"}};
 const gaugeMap={"0":{brand:"ROCO",scale:"H0 (1:87)",power:"DC",sound:"No"},"1":{brand:"ROCO",scale:"H0 (1:87)",power:"DCC",sound:"Yes"},"2":{brand:"ROCO",scale:"H0 (1:87)",power:"AC",sound:"No"},"3":{brand:"ROCO",scale:"0e (1:45)",power:"DC",sound:"No"},"4":{brand:"ROCO",scale:"H0e (1:87)",power:"DC",sound:"No"},"5":{brand:"ROCO",scale:"H0e (1:87)",power:"DCC",sound:"Yes"},"6":{brand:"FLEISCHMANN",scale:"N (1:160)",power:"DC",sound:"No"},"7":{brand:"FLEISCHMANN",scale:"N (1:160)",power:"DCC",sound:"Yes"},"8":{brand:"ROCO",scale:"TT (1:120)",power:"DC",sound:"No"},"9":{brand:"ROCO",scale:"TT (1:120)",power:"DCC",sound:"Yes"}};
 function clearResult(){["r_item","r_brand","r_category","r_product","r_scale","r_power","r_sound","r_seq","r_link"].forEach(id=>document.getElementById(id).innerHTML="");productLinkRow.style.display="none";}
 function clearAll(){document.getElementById("itemNo").value="";document.getElementById("error").innerHTML="";clearResult();titleBar.className="header";}
-function decodeItem(){
+
+async function decodeItem(){
 const item=itemNo.value.trim();error.innerHTML="";clearResult();
 if(!/^\d+$/.test(item)){error.innerHTML="❌ Item Number chỉ được chứa ký tự số (0-9)";return;}
 if(item.length!==7){error.innerHTML="❌ Item Number phải gồm đúng 7 ký tự";return;}
@@ -64,6 +84,32 @@ const url=t.brand==="ROCO"?"https://www.roco.cc/rde/catalogsearch/result/?q="+it
 r_link.innerHTML='<a class="product-btn" target="_blank" href="'+url+'">View Product</a>';
 productLinkRow.style.display="table-row";
 titleBar.className=t.brand==="ROCO"?"header roco":"header flm";
+
+const response =
+ await fetch(
+   "https://roco-image-proxy.xxx.workers.dev/?item="
+   + item
+ );
+
+const data = await response.json();
+
+if(data.found){
+
+    previewImage.src=data.image;
+
+    previewImage.style.display="block";
+
+    previewNotFound.style.display="none";
+
+}
+else{
+
+    previewImage.style.display="none";
+
+    previewNotFound.style.display="block";
+
+}
+  
 }
 itemNo.addEventListener("keypress",e=>{if(e.key==="Enter")decodeItem();});
 itemNo.addEventListener("input",function(){if(this.value.length===7)decodeItem();});
