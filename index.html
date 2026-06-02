@@ -124,9 +124,8 @@ const previewNotFound =
 if(data.found){
 
     previewImage.src = data.image;
-
+    previewImage.onerror = () => {console.log("IMAGE BLOCKED");};
     previewImage.style.display = "block";
-
     previewNotFound.style.display = "none";
 
 }else{
