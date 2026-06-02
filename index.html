@@ -44,6 +44,19 @@ placeholder="Enter 7-digit Item Number">
 <tr id="productLinkRow" style="display:none;"><td class="label">Product Link (Wifi cty)</td><td id="r_link"></td></tr>
 </table>
 </div>
+</div>
+
+<div id="productNotFound"
+     style="
+       display:none;
+       color:red;
+       font-weight:bold;
+       text-align:left;
+       margin-top:10px;
+       margin-left:5px;
+     ">
+     Link not found
+</div>
 <div class="footer">Published by Trường </div>
 
 <div id="previewContainer">
@@ -73,7 +86,8 @@ function clearAll(){
 
     document.getElementById("itemNo").value="";
     document.getElementById("error").innerHTML="";
-
+    document.getElementById("productNotFound").style.display="none";
+     
     clearResult();
  // Hủy event trước
     previewImage.onload = null;
@@ -106,7 +120,9 @@ titleBar.className=t.brand==="ROCO"?"header roco":"header flm";
 previewImage.style.display="none";
 previewImage.src="";
 previewNotFound.style.display="none";
-
+     
+document.getElementById("productNotFound").style.display="none";
+     
 try {
 
     const response =
@@ -120,25 +136,15 @@ try {
     const data = await response.json();
      console.log(data);
 
-     if(data.productExists === false){
+     r_link.innerHTML =
+  '<a class="product-btn" target="_blank" href="' +
+  url +
+  '">View Product</a>';
 
-    r_link.innerHTML =
-      '<a class="product-btn" target="_blank" href="' +
-      url +
-      '">View Product</a>' +
+if(data.productExists === false){
 
-      '&nbsp;&nbsp;&nbsp;' +
-
-      '<span style="color:red;font-weight:bold;">' +
-      'Link not found' +
-      '</span>';
-
-}else{
-
-    r_link.innerHTML =
-      '<a class="product-btn" target="_blank" href="' +
-      url +
-      '">View Product</a>';
+    document.getElementById("productNotFound")
+      .style.display = "block";
 
 }
 
