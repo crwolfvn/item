@@ -123,15 +123,26 @@ const previewImage =
 const previewNotFound =
     document.getElementById("previewNotFound");
 
-if(data.found){
+if(data.found && data.proxyImage){
+
+    previewImage.onload = function(){
+
+        previewImage.style.display = "block";
+        previewNotFound.style.display = "none";
+
+    };
+
+    previewImage.onerror = function(){
+
+        previewImage.style.display = "none";
+        previewNotFound.style.display = "block";
+
+    };
 
     previewImage.src = data.proxyImage;
-     
-    previewImage.onerror = () => {console.log("IMAGE BLOCKED");};
-    previewImage.style.display = "block";
-    previewNotFound.style.display = "none";
 
 }else{
+
 
     previewImage.style.display = "none";
 
