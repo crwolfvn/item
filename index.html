@@ -99,7 +99,23 @@ if(!gaugeMap[gauge]){error.innerHTML="❌ Gauge Code không hợp lệ";return;}
 const g=productGroups[group], t=gaugeMap[gauge];
 r_item.innerHTML=item;r_brand.innerHTML=t.brand;r_category.innerHTML=g.category;r_product.innerHTML=g.product;r_scale.innerHTML=t.scale;r_power.innerHTML=t.power;r_sound.innerHTML=t.sound;r_seq.innerHTML=seq;
 const url=t.brand==="ROCO"?"https://www.roco.cc/rde/catalogsearch/result/?q="+item:"https://www.fleischmann.de/fde/catalogsearch/result/?q="+item;
-r_link.innerHTML='<a class="product-btn" target="_blank" href="'+url+'">View Product</a>';
+if(data.productFound){
+
+    r_link.innerHTML =
+      '<a class="product-btn" target="_blank" href="' +
+      url +
+      '">View Product</a>';
+
+}else{
+
+    r_link.innerHTML =
+      '<span style="color:red;font-weight:bold;">' +
+      'Ihre Suche ergab keine Ergebnisse' +
+      '</span>';
+
+}
+
+     
 productLinkRow.style.display="table-row";
 titleBar.className=t.brand==="ROCO"?"header roco":"header flm";
 
