@@ -60,23 +60,55 @@ placeholder="Enter 7-digit Item Number">
 <div class="footer">Published by Trường </div>
 
 <div id="previewContainer">
-
 <h2>Preview Photo (không cần wifi cty)</h2>
-
 <img id="previewImage"
      style="
        display:none;
        max-width:100%;
        border:1px solid #ccc;
      ">
-
 <div id="previewNotFound"
      style="display:none;">
      Not Found Preview Photo
 </div>
+<div id="detailContainer"
+     style="
+       display:none;
+       width:95%;
+       margin:20px auto;
+       text-align:left;
+       background:#f5f5f5;
+       padding:20px;
+       box-sizing:border-box;
+     ">
 
+    <h2 id="detailTitle"
+        style="
+          color:#123c74;
+          margin-bottom:10px;
+        ">
+    </h2>
+
+    <div id="detailPrice"
+         style="
+           font-size:40px;
+           font-weight:bold;
+           color:#123c74;
+           margin-bottom:25px;
+         ">
+    </div>
+
+    <div id="detailDescription"
+         style="
+           white-space:pre-line;
+           line-height:1.7;
+           font-size:18px;
+         ">
+    </div>
+
+</div>
 </div>  
-  
+
 
 <script>
 const productGroups={"10":{category:"ELE",product:"Electronics"},"40":{category:"ACC",product:"Accessories"},"51":{category:"SET",product:"Start Set"},"53":{category:"SET-P",product:"Start Set Premium"},"55":{category:"SET",product:"Trainset"},"57":{category:"SET-P",product:"Trainset Premium"},"61":{category:"WAG-P",product:"Passenger Coaches Start"},"62":{category:"WAG-P",product:"Passenger Coaches"},"65":{category:"WAG-F",product:"Goods Wagons Start"},"66":{category:"WAG-F",product:"Goods Wagons"},"71":{category:"LOK-S",product:"Steam Locomotives"},"73":{category:"LOK-D",product:"Diesel Locomotives"},"75":{category:"LOK-E",product:"Electric Locomotives"},"77":{category:"RC",product:"Railcars"}};
@@ -87,6 +119,10 @@ function clearAll(){
     document.getElementById("itemNo").value="";
     document.getElementById("error").innerHTML="";
     document.getElementById("productNotFound").style.display="none";
+    document.getElementById("detailContainer").style.display = "none";
+    document.getElementById("detailTitle").innerHTML = "";
+    document.getElementById( "detailPrice").innerHTML = "";
+    document.getElementById("detailDescription").innerHTML = "";
      
     clearResult();
  // Hủy event trước
@@ -100,6 +136,7 @@ function clearAll(){
     previewNotFound.style.display="none";
 
     titleBar.className="header";
+     
 
 }
 
@@ -138,13 +175,46 @@ try {
 
     const data = await response.json();
      console.log(data);
+const detailContainer =
+document.getElementById("detailContainer");
 
-     
+const detailTitle =
+document.getElementById("detailTitle");
+
+const detailPrice =
+document.getElementById("detailPrice");
+
+const detailDescription =
+document.getElementById("detailDescription");
+
+if(data.title){
+
+    detailContainer.style.display =
+      "block";
+
+    detailTitle.innerText =
+      data.title;
+
+    detailPrice.innerText =
+      data.price || "";
+
+    detailDescription.innerText =
+      data.description || "";
+
+}else{
+
+    detailContainer.style.display =
+      "none";
+
+} 
 
 if(data.productExists === false){
 
     document.getElementById("productNotFound")
       .style.display = "block";
+     document.getElementById(
+  "detailContainer"
+).style.display = "none";
 
 }
 
