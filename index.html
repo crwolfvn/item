@@ -293,19 +293,19 @@ async function loadMEV(item){
 
         for(const line of lines){
 
-            const parts =
-                line.trim().split(";");
+    const parts =
+        line.trim().split(/[;,]/);
 
-            if(parts.length < 2)
-                continue;
+    if(parts.length < 2)
+        continue;
 
-            if(parts[0] === item){
+    if(parts[0].trim() === item){
 
-                return parts[1];
+        return parts[1].trim();
 
-            }
+    }
 
-        }
+}
 
         return "";
 
