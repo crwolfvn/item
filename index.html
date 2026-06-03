@@ -40,7 +40,7 @@ placeholder="Enter 7-digit Item Number">
 <tr><td class="label">Scale</td><td id="r_scale"></td></tr>
 <tr><td class="label">Power System</td><td id="r_power"></td></tr>
 <tr><td class="label">Sound</td><td id="r_sound"></td></tr>
-<tr><td class="label">Consecutive Number</td><td id="r_seq"></td></tr>
+<tr><td class="label">MEV Forecast</td><td id="r_fc"></td></tr>
 <tr id="productLinkRow" style="display:none;"><td class="label">Product Link (Wifi cty)</td><td id="r_link"></td></tr>
 </table>
 </div>
@@ -113,7 +113,7 @@ placeholder="Enter 7-digit Item Number">
 <script>
 const productGroups={"10":{category:"ELE",product:"Electronics"},"40":{category:"ACC",product:"Accessories"},"51":{category:"SET",product:"Start Set"},"53":{category:"SET-P",product:"Start Set Premium"},"55":{category:"SET",product:"Trainset"},"57":{category:"SET-P",product:"Trainset Premium"},"61":{category:"WAG-P",product:"Passenger Coaches Start"},"62":{category:"WAG-P",product:"Passenger Coaches"},"65":{category:"WAG-F",product:"Goods Wagons Start"},"66":{category:"WAG-F",product:"Goods Wagons"},"71":{category:"LOK-S",product:"Steam Locomotives"},"73":{category:"LOK-D",product:"Diesel Locomotives"},"75":{category:"LOK-E",product:"Electric Locomotives"},"77":{category:"RC",product:"Railcars"}};
 const gaugeMap={"0":{brand:"ROCO",scale:"H0 (1:87)",power:"DC",sound:"No"},"1":{brand:"ROCO",scale:"H0 (1:87)",power:"DCC",sound:"Yes"},"2":{brand:"ROCO",scale:"H0 (1:87)",power:"AC",sound:"No"},"3":{brand:"ROCO",scale:"0e (1:45)",power:"DC",sound:"No"},"4":{brand:"ROCO",scale:"H0e (1:87)",power:"DC",sound:"No"},"5":{brand:"ROCO",scale:"H0e (1:87)",power:"DCC",sound:"Yes"},"6":{brand:"FLEISCHMANN",scale:"N (1:160)",power:"DC",sound:"No"},"7":{brand:"FLEISCHMANN",scale:"N (1:160)",power:"DCC",sound:"Yes"},"8":{brand:"ROCO",scale:"TT (1:120)",power:"DC",sound:"No"},"9":{brand:"ROCO",scale:"TT (1:120)",power:"DCC",sound:"Yes"}};
-function clearResult(){["r_item","r_brand","r_category","r_product","r_scale","r_power","r_sound","r_seq","r_link"].forEach(id=>document.getElementById(id).innerHTML="");productLinkRow.style.display="none";}
+function clearResult(){["r_item","r_brand","r_category","r_product","r_scale","r_power","r_sound","r_fc","r_link"].forEach(id=>document.getElementById(id).innerHTML="");productLinkRow.style.display="none";}
 function clearAll(){
 
     document.getElementById("itemNo").value="";
@@ -148,7 +148,23 @@ const group=item.substring(0,2), gauge=item.substring(2,3), seq=item.substring(3
 if(!productGroups[group]){error.innerHTML="❌ Product Group không hợp lệ";return;}
 if(!gaugeMap[gauge]){error.innerHTML="❌ Gauge Code không hợp lệ";return;}
 const g=productGroups[group], t=gaugeMap[gauge];
-r_item.innerHTML=item;r_brand.innerHTML=t.brand;r_category.innerHTML=g.category;r_product.innerHTML=g.product;r_scale.innerHTML=t.scale;r_power.innerHTML=t.power;r_sound.innerHTML=t.sound;r_seq.innerHTML=seq;
+r_item.innerHTML=item;r_brand.innerHTML=t.brand;r_category.innerHTML=g.category;r_product.innerHTML=g.product;r_scale.innerHTML=t.scale;r_power.innerHTML=t.power;r_sound.innerHTML=t.sound;
+const mev =
+    await loadMEV(item);
+
+if(mev){
+
+    r_fc.innerHTML =
+        "<span style='color:blue;font-weight:bold'>" +
+        mev +
+        "</span>";
+
+}else{
+
+    r_fc.innerHTML =
+        "-";
+
+}
 const url=t.brand==="ROCO"?"https://www.roco.cc/rde/catalogsearch/result/?q="+item:"https://www.fleischmann.de/fde/catalogsearch/result/?q="+item;
 r_link.innerHTML =
   '<a class="product-btn" target="_blank" href="' +
@@ -260,7 +276,50 @@ if(data.found && data.proxyImage){
 
 }
   
-}
+}  // Close Async
+
+async function loadMEV(item){
+
+    try{
+
+        const response =
+            await fetch("mev.csv");
+
+        const text =
+            await response.text();
+
+        const lines =
+            text.split("\n");
+
+        for(const line of lines){
+
+            const parts =
+                line.trim().split(";");
+
+            if(parts.length < 2)
+                continue;
+
+            if(parts[0] === item){
+
+                return parts[1];
+
+            }
+
+        }
+
+        return "";
+
+    }
+    catch(err){
+
+        console.log(err);
+
+        return "";
+
+    }
+
+} // Close async 2
+     
 itemNo.addEventListener("keypress",e=>{if(e.key==="Enter")decodeItem();});
 itemNo.addEventListener("input",function(){if(this.value.length===7)decodeItem();});
 </script></div>
