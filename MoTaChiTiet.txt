@@ -14,3 +14,10 @@ c. Lấy HTML data về dựng lại ở bên dưới hình ảnh
 
 NẾU KHÔNG CÓ:
 Trả về cảnh báo Link Not Found ở góc dưới bên phải của Table 
+
+
+
+4. Forecast Week.
+Trong folder có 1 file " mev.csv 
+Trong đó có 2 cột : Artikel, FC KW
+Thực hiện lookup thủ công để lấy ra số tuần FC
