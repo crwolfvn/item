@@ -1,0 +1,16 @@
+MÔ TẢ CHI TIẾT DỰ ÁN
+
+1. Library được thêm thủ công vào HTML
+
+2. Sau khi mã item được nhập vào ô nhập liệu, quá trình giải mã off-line bắt đầu. 
+Kết quả trả về được hiển thị trong table bên dưới
+
+3. Hình ảnh : 
+Cloudflare Worker chịu trách nhiệm vào link sản phẩm dược tạo để :
+a. Xác nhận sản phẩm có tồn tại hay không ? 
+NẾU CÓ :
+b. Lấy Hình ảnh về và dựng lại ở Cloudflare server. Sau đó hiển thị ở bên dưới table
+c. Lấy HTML data về dựng lại ở bên dưới hình ảnh 
+
+NẾU KHÔNG CÓ:
+Trả về cảnh báo Link Not Found ở góc dưới bên phải của Table 
