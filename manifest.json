@@ -1,6 +1,6 @@
 {
   "name": "ROCO / FLM FG Check",
-  "short_name": "Item",
+  "short_name": "FG Item",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
