@@ -129,12 +129,12 @@ async function decodeItem() {
         if (data.title) {  detailContainer.style.display = "block";  detailTitle.innerText = data.title;  detailPrice.innerText = data.price || ""; detailDescription.innerText = data.description || ""; } 
         else {detailContainer.style.display = "none";}
         if (data.productExists === false) {document.getElementById("productNotFound").style.display = "block";detailContainer.style.display = "none";}
-        if (data.found && data.proxyImage) {
+        if (data.found && data.imageUrl) {
             previewImage.onload = function () {
             previewImage.style.display = "block";
             previewNotFound.style.display = "none"; };
             previewImage.onerror = function () {previewImage.style.display = "none";previewNotFound.style.display = "block";};
-            previewImage.src = data.proxyImage;         }  
+            previewImage.src = data.imageUrl;         }  
         else {previewImage.style.display = "none"; previewNotFound.style.display = "block"; }} 
          catch (err) { console.log(err);
         previewImage.style.display = "none";
