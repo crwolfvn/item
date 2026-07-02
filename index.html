@@ -166,11 +166,13 @@ async function loadMEV(item){
   catch(err){ console.log(err);   return "";  } 
   } 
 // Close async 2. Kết thúc lấy Forecast KW 
-     
-itemNo.addEventListener("keypress",e=>{if(e.key==="Enter")decodeItem();});
-itemNo.addEventListener("input",function(){if(this.value.length===7)decodeItem();});
 }
 // Kết thúc function Decode Item
+
+// Thực hiện tra cứu realtime khi bấm từng phím
+itemNo.addEventListener("keypress",e=>{if(e.key==="Enter")decodeItem();});
+itemNo.addEventListener("input",function(){if(this.value.length===7)decodeItem();});
+
 </script></div>
 </body></html>
  
