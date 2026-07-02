@@ -128,12 +128,13 @@ async function decodeItem() {
     if (!response.ok) {throw new Error(response.status);}
 	const data = await response.json();
 	if (!data.title) {throw new Error("Product not found");}
-	if (data.price) {    const price = Number(data.price);
-		detailPrice.innerText = "€ " + price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2});} 
-	else {detailPrice.innerText = "";}
-
-    detailContainer.style.display = "block";
+	detailContainer.style.display = "block";
     detailTitle.innerText = data.title || "";		
+	const price = Number(data.price);
+	detailPrice.innerText = 
+		price === 0
+        ? "€ -.--"
+        : "€ " + price.toLocaleString("en-US", {minimumFractionDigits: 2,maximumFractionDigits: 2});
     detailDescription.innerText = data.description || "";
     previewImage.onload = 
         function () {previewImage.style.display = "block";
