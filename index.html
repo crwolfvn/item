@@ -128,6 +128,10 @@ async function decodeItem() {
     
 // **** Bắt đầu giao tiếp với Back-End ===================================================================================================
     try { 
+		previewImage.onload = function () {previewImage.style.display = "block";previewNotFound.style.display = "none";};
+    	previewImage.onerror = function () {previewImage.style.display = "none";previewNotFound.style.display = "block";};
+    	previewImage.src =`https://img-proxy.crwolfvn.workers.dev/image?item_no=${item}&brand=${encodeURIComponent(t.brand)}`;
+		
 	const response = await fetch(`https://img-proxy.crwolfvn.workers.dev/product?item_no=${item}&brand=${encodeURIComponent(t.brand)}`);
     if (!response.ok) {throw new Error(response.status);}
 	const data = await response.json();
@@ -140,24 +144,13 @@ async function decodeItem() {
         ? "€ -.--"
         : "€ " + price.toLocaleString("en-US", {minimumFractionDigits: 2,maximumFractionDigits: 2});
     detailDescription.innerText = data.description || "";
-    previewImage.onload = 
-        function () {previewImage.style.display = "block";
-                    previewNotFound.style.display = "none";};
-    previewImage.onerror = 
-        function () {previewImage.style.display = "none";
-                     previewNotFound.style.display = "block";};
-    previewImage.src =`https://img-proxy.crwolfvn.workers.dev/image?item_no=${item}&brand=${encodeURIComponent(t.brand)}`;
-    
-    
-
     }
     catch(err){
     detailContainer.style.display = "none";
-    productNotFound.style.display = "block";
-    }        
+    productNotFound.style.display = "block";    }        
 // **** Kết thúc giao tiếp với Back-End
     
-// Kết nối với Forecast KW list     
+// Bắt đầu đọc file csv lấy Forecast Week
 async function loadMEV(item){
  try{
   const response = await fetch("mev.csv");
